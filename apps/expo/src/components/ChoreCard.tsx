@@ -22,7 +22,7 @@ export const ChoreCard: React.FC<{
         <Text className="pb-3 text-slate-500 ">{description}</Text>
       )}
       <View className="flex flex-row justify-between">
-        <DelayTimer expectedDate={expectedDate} currentDate={new Date()} />
+        <DelayTimer expectedDate={expectedDate} />
       </View>
     </View>
   );

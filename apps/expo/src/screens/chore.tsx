@@ -124,7 +124,7 @@ export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
           >
             {title}
           </Text>
-          <DelayTimer expectedDate={date} currentDate={new Date()} />
+          <DelayTimer expectedDate={date} />
         </View>
 
         <View className="border-b border-slate-200 py-4">
