@@ -1,6 +1,7 @@
 import { ExpoConfig, ConfigContext } from "@expo/config";
 
-const CLERK_PUBLISHABLE_KEY = "your-clerk-publishable-key";
+const CLERK_PUBLISHABLE_KEY =
+  "pk_test_dmFsdWVkLXRyb3V0LTg4LmNsZXJrLmFjY291bnRzLmRldiQ";
 
 const defineConfig = (_ctx: ConfigContext): ExpoConfig => ({
   name: "expo",
@@ -28,6 +29,7 @@ const defineConfig = (_ctx: ConfigContext): ExpoConfig => ({
       backgroundColor: "#2e026d",
     },
   },
+  scheme: "chores",
   extra: {
     eas: {
       projectId: "your-project-id",

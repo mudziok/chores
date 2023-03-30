@@ -10,8 +10,40 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
+model ChoreSlot {
     id      String @id @default(cuid())
     title   String
-    content String
+    description String
+    startDate DateTime
+    endDate DateTime?
+    repeatDay Int?
+    chores Chore[]
+}
+
+model Chore {
+    id      String @id @default(cuid())
+    slot ChoreSlot  @relation(fields: [slotId], references: [id], onDelete: Cascade)
+    slotId String
+    expectedDate DateTime
+    completedDate DateTime?
+    completedBy User? @relation(fields: [completedById], references: [id]) 
+    completedById String?
+
+    @@unique([slotId, expectedDate])
+}
+
+model Household {
+    id      String @id @default(cuid())
+    name    String
+    members User[]
+    inviteCode String @unique
+}
+
+model User {
+    id       String @id
+    username String
+    profileImageUrl String @map("profile_image_url")
+    household   Household? @relation(fields: [householdId], references: [id])
+    householdId String? @map("household_id")
+    completedChores Chore[]
 }
