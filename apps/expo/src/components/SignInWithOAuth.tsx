@@ -1,6 +1,7 @@
 import { useSignUp, useSignIn } from "@clerk/clerk-expo";
 import React from "react";
-import { Button, View } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import * as AuthSession from "expo-auth-session";
 
@@ -75,12 +76,15 @@ const SignInWithOAuth = () => {
   };
 
   return (
-    <View className="rounded-lg border-2 border-gray-500 p-4">
-      <Button
-        title="Sign in with Discord"
-        onPress={handleSignInWithDiscordPress}
-      />
-    </View>
+    <TouchableOpacity
+      className="my-4 flex flex-row items-center justify-center rounded-full bg-slate-600 p-3"
+      onPress={handleSignInWithDiscordPress}
+    >
+      <Text className="pr-2 font-semibold text-white">
+        Sign in with Discord
+      </Text>
+      <MaterialCommunityIcons name="discord" color="white" size={16} />
+    </TouchableOpacity>
   );
 };
 
