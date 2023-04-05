@@ -5,8 +5,29 @@ import { TRPCError } from "@trpc/server";
 export const householdRouter = router({
   create: protectedProcedure
     .input(z.object({ name: z.string() }))
-    .mutation(({ ctx, input }) => {
-      return {};
+    .mutation(async ({ ctx, input }) => {
+      const { name } = input;
+
+      while (true) {
+        const inviteCode = Math.random()
+          .toString(36)
+          .substring(3, 8)
+          .toUpperCase();
+
+        const taken = await ctx.prisma.household.findUnique({
+          where: { inviteCode },
+        });
+
+        if (!taken) {
+          return ctx.prisma.household.create({
+            data: {
+              name,
+              inviteCode,
+              members: { connect: [{ id: ctx.auth.userId }] },
+            },
+          });
+        }
+      }
     }),
   inviteCode: protectedProcedure.query(async ({ ctx }) => {
     const { auth, prisma } = ctx;
@@ -17,9 +38,6 @@ export const householdRouter = router({
     });
 
     return { code: household?.inviteCode || "ERROR" };
-  }),
-  refreshCode: protectedProcedure.mutation(({ ctx }) => {
-    return {};
   }),
   joinHousehold: protectedProcedure
     .input(z.object({ inviteCode: z.string() }))
