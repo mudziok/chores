@@ -111,7 +111,7 @@ export const NewChore: FC<NewChoreScreenProps> = ({ navigation, route }) => {
         />
       </View>
       <TouchableOpacity
-        className="my-4 flex flex-row items-center justify-center rounded-full bg-slate-600 p-3"
+        className="my-4 flex flex-row items-center justify-center rounded-full bg-fuchsia-600 p-3"
         onPress={() => mutate({ ...chore, repeatDay: chore.weekday[0] })}
       >
         <Text className="pr-2 font-semibold text-white">Create</Text>

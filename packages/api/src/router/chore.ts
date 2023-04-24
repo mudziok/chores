@@ -6,13 +6,21 @@ export const choreRouter = router({
   all: protectedProcedure
     .input(z.object({ day: z.date() }))
     .query(async ({ ctx, input }) => {
-      const { prisma } = ctx;
+      const { prisma, auth } = ctx;
+      const { userId } = auth;
       const { day } = input;
 
       const now = startOfDay(day);
 
+      let { householdId } = await prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: { householdId: true },
+      });
+
+      householdId = householdId || "ERROR";
+
       const choreSlots = await prisma.choreSlot.findMany({
-        where: { repeatDay: getDay(now) },
+        where: { repeatDay: getDay(now), householdId },
         include: {
           chores: {
             where: { expectedDate: { lte: now } },
@@ -43,7 +51,7 @@ export const choreRouter = router({
       const oneOffChores = await prisma.chore.findMany({
         where: {
           expectedDate: now,
-          slot: { repeatDay: null },
+          slot: { repeatDay: null, householdId },
         },
         include: {
           slot: true,
@@ -56,6 +64,7 @@ export const choreRouter = router({
         const pastChores = await prisma.chore.findMany({
           where: {
             expectedDate: { lt: now },
+            slot: { householdId },
             OR: [{ completedBy: null }, { completedDate: now }],
           },
           include: {
@@ -67,7 +76,7 @@ export const choreRouter = router({
       }
 
       return {
-        chores: chores,
+        chores,
         stats: {
           all: chores.length,
           done: chores.filter(({ completedById }) => completedById).length,
@@ -131,10 +140,16 @@ export const choreRouter = router({
         repeatDay: z.number().optional(),
       }),
     )
-    .mutation(({ ctx, input }) => {
-      const { prisma } = ctx;
+    .mutation(async ({ ctx, input }) => {
+      const { prisma, auth } = ctx;
+      const { userId } = auth;
       const { title, description, repeatDay } = input;
       const now = startOfDay(new Date());
+
+      const { householdId } = await prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: { householdId: true },
+      });
 
       if (repeatDay) {
         return prisma.choreSlot.create({
@@ -143,6 +158,7 @@ export const choreRouter = router({
             description,
             startDate: now,
             repeatDay,
+            householdId: householdId || "ERROR",
           },
         });
       }
@@ -153,6 +169,7 @@ export const choreRouter = router({
           description,
           startDate: now,
           chores: { create: [{ expectedDate: now }] },
+          householdId: householdId || "ERROR",
         },
       });
     }),

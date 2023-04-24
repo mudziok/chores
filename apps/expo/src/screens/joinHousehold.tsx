@@ -17,6 +17,7 @@ export const JoinHouseholdeScreen = () => {
     trpc.household.joinHousehold.useMutation({
       onSuccess: () => {
         utils.household.inviteCode.reset();
+        utils.chore.invalidate();
       },
     });
 
@@ -37,7 +38,7 @@ export const JoinHouseholdeScreen = () => {
             style={{ lineHeight: 50 }}
           />
           <TouchableOpacity
-            className="flex flex-row items-center justify-center rounded-full bg-slate-600 p-3"
+            className="flex flex-row items-center justify-center rounded-full bg-fuchsia-600 p-3"
             onPress={() => mutate({ inviteCode })}
           >
             <Text className="pr-2 font-semibold text-white">Join</Text>

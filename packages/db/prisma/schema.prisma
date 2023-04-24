@@ -17,6 +17,8 @@ model ChoreSlot {
     startDate DateTime
     endDate DateTime?
     repeatDay Int?
+    household Household? @relation(fields: [householdId], references: [id]) 
+    householdId String
     chores Chore[]
 }
 
@@ -36,6 +38,7 @@ model Household {
     id      String @id @default(cuid())
     name    String
     members User[]
+    choreSlots ChoreSlot[]
     inviteCode String @unique
 }
 

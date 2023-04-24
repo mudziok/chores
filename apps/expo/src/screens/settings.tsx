@@ -30,7 +30,7 @@ const UserDetails: FC = () => {
           <Text>{user?.emailAddresses[0]?.emailAddress || null}</Text>
         </View>
         <TouchableOpacity
-          className="flex flex-row items-center justify-center rounded-full bg-slate-600 p-3"
+          className="flex flex-row items-center justify-center rounded-full bg-fuchsia-600 p-3"
           onPress={() => signOut()}
         >
           <Text className="pr-2 font-semibold text-white">Logout</Text>
