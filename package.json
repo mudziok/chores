@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.2",
+    "is-unicode-supported": "^0.1.0",
+    "semver": "^7.6.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint": "^8.28.0",
@@ -25,8 +27,12 @@
     "typescript": "^4.9.3"
   },
   "pnpm": {
-    "patchedDependencies": {
-      "react-native@0.70.5": "patches/react-native@0.70.5.patch"
+    "overrides": {
+      "@types/react": "^19.1.1",
+      "@types/react-dom": "^19.1.2",
+      "@babel/core": "^7.24.0",
+      "@babel/runtime": "^7.24.0",
+      "react-native-worklets": "0.7.4"
     }
   }
 }

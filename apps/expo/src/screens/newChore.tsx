@@ -23,7 +23,7 @@ type ChoreValues = {
 type NewChoreScreenProps = NativeStackScreenProps<StackParamList, "New chore">;
 
 export const NewChore: FC<NewChoreScreenProps> = ({ navigation, route }) => {
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
   const { params } = route;
   const { queryDate } = params;
 
@@ -33,7 +33,7 @@ export const NewChore: FC<NewChoreScreenProps> = ({ navigation, route }) => {
     weekday: [],
   });
 
-  const { mutate, isLoading } = trpc.chore.create.useMutation({
+  const { mutate, isPending: isLoading } = trpc.chore.create.useMutation({
     onSuccess: () => {
       utils.chore.all.invalidate({ day: new Date(queryDate) });
       navigation.goBack();
@@ -42,14 +42,14 @@ export const NewChore: FC<NewChoreScreenProps> = ({ navigation, route }) => {
 
   if (isLoading) {
     return (
-      <View className="flex flex-1 items-center justify-center bg-white">
+      <View className="-mt-20 flex flex-1 items-center justify-center bg-white">
         <ActivityIndicator />
       </View>
     );
   }
 
   return (
-    <ScrollView className="flex flex-1 flex-col bg-white p-4">
+    <ScrollView className="-mt-20 flex flex-1 flex-col bg-white p-4">
       <View className="flex w-full flex-row items-center justify-between border-b border-slate-200 py-8">
         <Text className="text-3xl font-medium">New chore</Text>
       </View>

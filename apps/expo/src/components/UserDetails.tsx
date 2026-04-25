@@ -19,13 +19,13 @@ export const UserDetails: FC = () => {
     );
   }
 
-  const { profileImageUrl, username } = user;
+  const { imageUrl, username } = user;
 
   return (
     <TouchableOpacity className="flex flex-row gap-4">
       <Image
         source={{
-          uri: profileImageUrl,
+          uri: imageUrl,
         }}
         className="h-14 w-14 rounded-full border border-slate-200 shadow-sm"
       />

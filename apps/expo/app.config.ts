@@ -15,9 +15,6 @@ const defineConfig = (_ctx: ConfigContext): ExpoConfig => ({
     resizeMode: "contain",
     backgroundColor: "#ffffff",
   },
-  updates: {
-    fallbackToCacheTimeout: 0,
-  },
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,

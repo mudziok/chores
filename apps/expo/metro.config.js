@@ -2,6 +2,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getDefaultConfig } = require('expo/metro-config');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
+const { withNativeWind } = require('nativewind/metro');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
 const projectRoot = __dirname;
@@ -23,4 +25,7 @@ config.resolver.nodeModulesPaths = [
 // 3. Force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
 config.resolver.disableHierarchicalLookup = true;
 
-module.exports = config;
+module.exports = withNativeWind(config, {
+  input: './global.css',
+  configPath: './tailwind.config.cjs',
+});

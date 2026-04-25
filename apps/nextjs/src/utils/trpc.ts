@@ -13,9 +13,9 @@ const getBaseUrl = () => {
 };
 
 export const trpc = createTRPCNext<AppRouter>({
+  transformer,
   config() {
     return {
-      transformer,
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -23,6 +23,7 @@ export const trpc = createTRPCNext<AppRouter>({
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
+          transformer,
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],

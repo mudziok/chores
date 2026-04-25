@@ -1,32 +1,36 @@
 import { useState } from "react";
 import {
-  SafeAreaView,
   TextInput,
   TouchableOpacity,
   Text,
   ActivityIndicator,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { trpc } from "../utils/trpc";
 
 export const JoinHouseholdeScreen = () => {
   const [inviteCode, setInviteCode] = useState<string>("");
 
-  const utils = trpc.useContext();
-  const { mutate, error, isLoading, data } =
-    trpc.household.joinHousehold.useMutation({
-      onSuccess: () => {
-        utils.household.inviteCode.reset();
-        utils.chore.invalidate();
-      },
-    });
+  const utils = trpc.useUtils();
+  const {
+    mutate,
+    error,
+    isPending: isLoading,
+    data,
+  } = trpc.household.joinHousehold.useMutation({
+    onSuccess: () => {
+      utils.household.inviteCode.reset();
+      utils.chore.invalidate();
+    },
+  });
 
   const onChangeCode = (text: string) => {
     setInviteCode(text);
   };
 
   return (
-    <SafeAreaView className="-mb-12 flex flex-1 items-center justify-center gap-4 bg-slate-100 text-slate-800">
+    <SafeAreaView className="-mt-20 flex flex-1 items-center justify-center gap-4 bg-slate-100 text-slate-800">
       {!isLoading ? (
         <>
           <Text>Enter household code:</Text>

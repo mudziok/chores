@@ -10,7 +10,6 @@ import {
 import { StackParamList } from "../router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SwipeToConfirm } from "../components/SwipeToConfirm";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { trpc } from "../utils/trpc";
 import { format, startOfDay } from "date-fns";
 import { Avatar } from "../components/Avatar";
@@ -22,20 +21,13 @@ type ChoreScreenProps = NativeStackScreenProps<StackParamList, "Chore">;
 export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
   const { params } = route;
   const { id, expectedDate, queryDate } = params;
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const choreDay = startOfDay(new Date(expectedDate));
   const { user } = useUser();
-  const { profileImageUrl, username } = user!;
+  const { imageUrl, username } = user!;
 
-  const choreQuery = trpc.chore.byId.useQuery(
-    { id, day: choreDay },
-    {
-      initialData: utils.chore.all
-        .getData({ day: new Date(queryDate) })
-        ?.chores.find((chore) => chore.id === id),
-    },
-  );
+  const choreQuery = trpc.chore.byId.useQuery({ id, day: choreDay });
 
   const { mutate } = trpc.chore.changeStatus.useMutation({
     onMutate: async ({ done }) => {
@@ -56,7 +48,7 @@ export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
                     ? {
                         id: "id",
                         householdId: "id",
-                        profileImageUrl,
+                        profileImageUrl: imageUrl ?? "",
                         username: username || "username",
                       }
                     : null,
@@ -85,7 +77,7 @@ export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
     },
   });
 
-  if (!choreQuery.data || deleteMutation.isLoading) {
+  if (!choreQuery.data || deleteMutation.isPending) {
     return (
       <View className="flex flex-1 items-center justify-center bg-white">
         <ActivityIndicator />
@@ -114,7 +106,7 @@ export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
     );
 
   return (
-    <GestureHandlerRootView className="flex-1">
+    <>
       <View className="flex min-h-full flex-1 flex-col bg-white p-4">
         <View className="flex w-full flex-row items-center justify-between border-b border-slate-200 py-8">
           <Text
@@ -199,6 +191,6 @@ export const ChoreScreen: FC<ChoreScreenProps> = ({ route, navigation }) => {
           />
         </View>
       </View>
-    </GestureHandlerRootView>
+    </>
   );
 };

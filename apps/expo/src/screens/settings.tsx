@@ -1,12 +1,7 @@
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { FC, useMemo } from "react";
-import {
-  FlatList,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Avatar } from "../components/Avatar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -63,7 +58,7 @@ export const SettingsScreen = () => {
   );
 
   return (
-    <SafeAreaView className="-mb-12 flex-1 bg-slate-100 text-slate-800">
+    <SafeAreaView className="-mt-20 flex-1 bg-slate-100 text-slate-800">
       <FlatList
         data={actions}
         ListHeaderComponent={<UserDetails />}

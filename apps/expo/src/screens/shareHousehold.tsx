@@ -1,10 +1,5 @@
-import {
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { trpc } from "../utils/trpc";
@@ -18,7 +13,7 @@ export const ShareHousehold = () => {
   const { data } = trpc.household.inviteCode.useQuery();
 
   return (
-    <SafeAreaView className="-mb-12 flex flex-1 items-center justify-center gap-4 bg-slate-100 text-slate-800">
+    <SafeAreaView className="-mt-20 flex flex-1 items-center justify-center gap-4 bg-slate-100 text-slate-800">
       {data ? (
         <Text className="text-5xl font-semibold">{data.code}</Text>
       ) : (

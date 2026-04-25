@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
   TextInput,
   View,
   Text,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import type { Household } from ".prisma/client";
 import { trpc } from "../utils/trpc";
@@ -16,18 +16,18 @@ type NewHouseholdValues = Pick<Household, "name">;
 export const NewHouseholdScreen = () => {
   const [household, setHousehold] = useState<NewHouseholdValues>({ name: "" });
 
-  const { mutate, isLoading } = trpc.household.create.useMutation();
+  const { mutate, isPending: isLoading } = trpc.household.create.useMutation();
 
   if (isLoading) {
     return (
-      <SafeAreaView className="-mb-12 flex flex-1 justify-center bg-slate-100 text-slate-800">
+      <SafeAreaView className="-mt-20 flex flex-1 justify-center bg-slate-100 text-slate-800">
         <ActivityIndicator />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className="-mb-12 flex flex-1 justify-center bg-slate-100 text-slate-800">
+    <SafeAreaView className="-mt-20 flex flex-1 justify-center bg-slate-100 text-slate-800">
       <View className="p-4">
         <View className="flex w-full border-b border-slate-200 pb-4">
           <View className="flex flex-row items-center gap-1 pb-2">
